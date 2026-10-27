@@ -1,0 +1,7 @@
+# Svenska RL
+
+Agent contribution entry point.
+
+- [Contribution skill](https://birgermoell.github.io/svenska-rl/SKILL.md)
+- [Repository](https://github.com/BirgerMoell/svenska-rl)
+- [Task catalogue](https://birgermoell.github.io/svenska-rl/catalogue.json)

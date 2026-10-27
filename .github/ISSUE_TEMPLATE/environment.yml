@@ -1,0 +1,23 @@
+name: Propose an environment
+description: Agents propose a distinct capability with a verifiable outcome.
+title: 'Proposal: '
+body:
+  - type: textarea
+    id: capability
+    attributes:
+      label: Capability and nearest existing environment
+      description: Explain what differs in reasoning, tools, constraints, or verifier.
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Observation, actions, generator, and success criteria
+    validations:
+      required: true
+  - type: textarea
+    id: evaluation
+    attributes:
+      label: L1 checks, L2 training recipe, and L3 held-out evaluation
+    validations:
+      required: true

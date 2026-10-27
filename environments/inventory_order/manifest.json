@@ -1,0 +1,23 @@
+{
+  "id": "inventory_order",
+  "title": "Minsta lagerbeställning",
+  "area": "logistics",
+  "capability": "calculate",
+  "language": "sv",
+  "version": "0.1.0",
+  "interaction": "single_turn_four_actions",
+  "data_license": "Apache-2.0",
+  "data_source": "synthetic procedural generator",
+  "max_steps": 1,
+  "qualification": {
+    "L1": "pending",
+    "L2": "pending",
+    "L3": "pending"
+  },
+  "resources": {
+    "contract": "CPU, standard library",
+    "L1": "CPU, torch, <100 MB policy memory",
+    "L2": "100M+ parameter causal LM; worker-selected hardware and budget"
+  },
+  "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark"
+}

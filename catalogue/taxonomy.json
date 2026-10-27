@@ -1,0 +1,393 @@
+{
+  "target_environments": 20000,
+  "status": "planned_capacity_not_existing_environments",
+  "allocation": {
+    "areas": 20,
+    "target_workflows_per_area": 100,
+    "target_capabilities_per_workflow": 10
+  },
+  "capabilities": [
+    {
+      "id": "find",
+      "name": "Hitta"
+    },
+    {
+      "id": "extract",
+      "name": "Extrahera"
+    },
+    {
+      "id": "validate",
+      "name": "Validera"
+    },
+    {
+      "id": "calculate",
+      "name": "Beräkna"
+    },
+    {
+      "id": "reconcile",
+      "name": "Stämma av"
+    },
+    {
+      "id": "decide",
+      "name": "Välja"
+    },
+    {
+      "id": "plan",
+      "name": "Planera"
+    },
+    {
+      "id": "execute",
+      "name": "Utföra"
+    },
+    {
+      "id": "monitor",
+      "name": "Övervaka"
+    },
+    {
+      "id": "recover",
+      "name": "Återställa"
+    }
+  ],
+  "areas": [
+    {
+      "id": "accounting",
+      "name": "Ekonomi och bokföring",
+      "workflow_seeds": [
+        "Skapa fakturor",
+        "Validera fakturor",
+        "Matcha betalningar",
+        "Hantera delbetalningar",
+        "Fördela kreditnotor",
+        "Utreda differenser",
+        "Följa upp förfallna fakturor",
+        "Stämma av reskontra",
+        "Rapportera kassaflöde",
+        "Kontrollera utlägg"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "purchasing",
+      "name": "Inköp och leverantörer",
+      "workflow_seeds": [
+        "Inköpsbegäran",
+        "Offertförfrågan",
+        "Offertjämförelse",
+        "Leverantörsregister",
+        "Beställning",
+        "Leveranskontroll",
+        "Avvikelsehantering",
+        "Avtalsuppföljning",
+        "Fakturakontroll",
+        "Inköpsrapport"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "sales",
+      "name": "Försäljning och CRM",
+      "workflow_seeds": [
+        "Leadkvalificering",
+        "Kundregister",
+        "Kontaktuppgifter",
+        "Offertarbete",
+        "Affärsprognos",
+        "Förnyelser",
+        "Kundsegment",
+        "Säljuppföljning",
+        "Aktivitetsplanering",
+        "Kundöverlämning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "support",
+      "name": "Kundservice",
+      "workflow_seeds": [
+        "Ärendeklassning",
+        "Felsökning",
+        "Returer",
+        "Återbetalning",
+        "Eskalering",
+        "Svarsmallar",
+        "Ärendehistorik",
+        "Prioritering",
+        "Uppföljning",
+        "Kunskapsbas"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "hr",
+      "name": "Personaladministration",
+      "workflow_seeds": [
+        "Introduktion",
+        "Ledighet",
+        "Bemanning",
+        "Kompetensregister",
+        "Utbildningsbokning",
+        "Tidrapportering",
+        "Personalregister",
+        "Avslut",
+        "Utrustning",
+        "Introduktionsplan"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "projects",
+      "name": "Projekt och samarbete",
+      "workflow_seeds": [
+        "Aktivitetsplan",
+        "Beroenden",
+        "Resursfördelning",
+        "Mötesåtgärder",
+        "Riskregister",
+        "Statusrapport",
+        "Tidsuppskattning",
+        "Ändringsbegäran",
+        "Leveranskontroll",
+        "Projektavslut"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "office",
+      "name": "Kontorsadministration",
+      "workflow_seeds": [
+        "Kalenderbokning",
+        "Resor",
+        "Korrespondens",
+        "Besök",
+        "Mötesunderlag",
+        "Dokumentdistribution",
+        "Kontaktlistor",
+        "Påminnelser",
+        "Lokalbokning",
+        "Beställningar"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "documents",
+      "name": "Dokument och arkiv",
+      "workflow_seeds": [
+        "Klassificering",
+        "Fältextraktion",
+        "Versionsjämförelse",
+        "Registerföring",
+        "Maskering",
+        "Arkivering",
+        "Metadata",
+        "Dubbletter",
+        "Dokumentpaket",
+        "Hänvisningar"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "research",
+      "name": "Informationsarbete",
+      "workflow_seeds": [
+        "Källsökning",
+        "Beläggsextraktion",
+        "Källjämförelse",
+        "Sammanställning",
+        "Referenskontroll",
+        "Tidslinje",
+        "Begreppskartläggning",
+        "Motsägelser",
+        "Tabelläsning",
+        "Frågebesvarande"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "analytics",
+      "name": "Dataanalys",
+      "workflow_seeds": [
+        "Datarensning",
+        "Sammanfogning",
+        "Beräkning",
+        "Aggregering",
+        "Rapportering",
+        "Avvikelseanalys",
+        "Datavalidering",
+        "Segmentering",
+        "Tidsserieanalys",
+        "Diagramtolkning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "software",
+      "name": "Programvaruutveckling",
+      "workflow_seeds": [
+        "Implementation",
+        "Felrättning",
+        "Testning",
+        "Refaktorering",
+        "Beroendeuppdatering",
+        "Kodgranskning",
+        "Migrering",
+        "API-anpassning",
+        "Dokumentation",
+        "Prestandafelsökning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "it",
+      "name": "IT-drift och support",
+      "workflow_seeds": [
+        "Behörighetsbegäran",
+        "Konfiguration",
+        "Övervakning",
+        "Incidenter",
+        "Säkerhetskopiering",
+        "Återställning",
+        "Inventering",
+        "Nätverksfelsökning",
+        "Distribution",
+        "Supporttriage"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "security",
+      "name": "Säkerhet och integritet",
+      "workflow_seeds": [
+        "Behörighetsrevision",
+        "Larmutredning",
+        "Datainventering",
+        "Gallring",
+        "Incidentlogg",
+        "Sekretessklassning",
+        "Nyckelrotation",
+        "Policykontroll",
+        "Åtkomstgranskning",
+        "Åtgärdsplan"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "marketing",
+      "name": "Marknad och kommunikation",
+      "workflow_seeds": [
+        "Kampanjplan",
+        "Målgrupper",
+        "Publiceringsplan",
+        "Lokalisering",
+        "Resultatanalys",
+        "Budgetfördelning",
+        "Innehållskontroll",
+        "Länkgranskning",
+        "UTM-register",
+        "Tillgångsregister"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "commerce",
+      "name": "E-handel och produktdata",
+      "workflow_seeds": [
+        "Produktlistning",
+        "Varianter",
+        "Prissättning",
+        "Kampanjer",
+        "Lagervisning",
+        "Orderavvikelser",
+        "Produktkategorier",
+        "Attribut",
+        "Returflöde",
+        "Katalogkontroll"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "logistics",
+      "name": "Logistik och lager",
+      "workflow_seeds": [
+        "Inleverans",
+        "Lagerallokering",
+        "Plockning",
+        "Påfyllning",
+        "Transportplan",
+        "Returer",
+        "Inventering",
+        "Leveransbevakning",
+        "Fraktkostnad",
+        "Lageravstämning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "manufacturing",
+      "name": "Produktion och kvalitet",
+      "workflow_seeds": [
+        "Arbetsorder",
+        "Produktionsplan",
+        "Kontrollmätning",
+        "Avvikelser",
+        "Underhåll",
+        "Spårbarhet",
+        "Materialbehov",
+        "Kapacitetsplan",
+        "Skiftöverlämning",
+        "Kvalitetsrapport"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "facilities",
+      "name": "Fastighet och lokaler",
+      "workflow_seeds": [
+        "Felanmälan",
+        "Arbetsorder",
+        "Lokalbokning",
+        "Besiktning",
+        "Energirapport",
+        "Entreprenörsplan",
+        "Nyckelregister",
+        "Underhållsplan",
+        "Tillgångsregister",
+        "Serviceuppföljning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "education",
+      "name": "Utbildningsadministration",
+      "workflow_seeds": [
+        "Schemaläggning",
+        "Kursanmälan",
+        "Uppgiftsregister",
+        "Kursdokument",
+        "Resursfördelning",
+        "Lokalplan",
+        "Närvarosammanställning",
+        "Behörighetskontroll",
+        "Materialdistribution",
+        "Kursutvärdering"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "administration",
+      "name": "Förening och förvaltning",
+      "workflow_seeds": [
+        "Ansökningar",
+        "Fullständighetskontroll",
+        "Ärendefördelning",
+        "Bidragsbudget",
+        "Medlemsregister",
+        "Avgifter",
+        "Dagordning",
+        "Protokollåtgärder",
+        "Bokningar",
+        "Uppföljning"
+      ],
+      "target_environments": 1000
+    }
+  ]
+}

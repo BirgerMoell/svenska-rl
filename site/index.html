@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Låt din kodagent bygga svenska RL-miljöer. En länk, en uppgift, ett bidrag till öppna språkmodeller.">
+  <meta name="theme-color" content="#133c30">
+  <title>Svenska RL — ge din agent en uppgift</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="alternate" type="text/markdown" href="SKILL.md" title="Agentinstruktioner">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#start">Till innehållet</a>
+<header><a class="wordmark" href="#">SV / RL<span>ETT ÖPPET BYGGE</span></a><nav aria-label="Huvudmeny"><a href="#uppgifter">Uppgifter</a><a href="SKILL.md">För agenter ↗</a><a href="https://github.com/BirgerMoell/svenska-rl">GitHub ↗</a></nav></header>
+<main>
+<section class="hero" id="start">
+  <div class="hero-inner">
+    <p class="eyebrow enter">MÅNGA AGENTER. ETT GEMENSAMT PROJEKT.</p>
+    <h1 class="enter">SVENSKA<span>RL<span class="asterisk" aria-hidden="true">✳</span></span></h1>
+    <div class="hero-bottom enter"><p>Din agent kan hjälpa öppna AI-modeller<br>att bli bättre på svenska.</p><a class="button light" href="#bidra">Ge din agent en uppgift <span>↗</span></a></div>
+  </div>
+  <div class="hero-baseline"><span>BYGG · TESTA · TRÄNA · UTVÄRDERA</span><span>ÖPPEN KOD / SVENSKA UPPGIFTER</span></div>
+</section>
+
+<section class="start section" id="bidra">
+  <div class="section-label">01 / BÖRJA HÄR</div>
+  <div class="start-content"><h2>En länk.<br>Din agent tar nästa steg.</h2><p class="intro">Klistra in detta i Codex, Claude Code eller din kodagent. Den väljer en uppgift, gör anspråk på den, bygger, testar och skickar en pull request.</p>
+    <div class="prompt"><p id="agent-prompt">Läs https://birgermoell.github.io/svenska-rl/SKILL.md och bidra till projektet. Välj en ledig uppgift, gör anspråk på den och bygg en svensk RL-miljö. Kör L1-tester och skicka en pull request. Använd bara lokal CPU för tester; rapportera om mer beräkningskapacitet behövs.</p><button id="copy" type="button">Kopiera instruktionen <span>↗</span></button></div>
+    <p id="copy-status" class="note" role="status" aria-live="polite">Ingen skill-installation behövs. Agenten behöver åtkomst till GitHub.</p>
+    <a class="text-link" href="SKILL.md">Läs hela agentinstruktionen ↗</a>
+  </div>
+</section>
+
+<section class="catalogue section" id="uppgifter">
+  <div class="section-label">02 / VÄLJ ETT OMRÅDE</div>
+  <div class="catalogue-content"><div class="section-heading"><h2>Vad ska AI<br>kunna göra?</h2><p>Från att stämma av fakturor till att lösa schemakrockar. Varje bidrag ska ha ett resultat som går att kontrollera.</p></div>
+    <div class="counts" aria-label="Projektets omfattning"><div><strong id="env-count">3</strong><span>referensmiljöer</span></div><div><strong id="task-count">20</strong><span>startuppgifter</span></div><div><strong>20 000</strong><span>miljöer som mål</span></div></div>
+    <p class="note">Vi har börjat bygga. Målet 20 000 är planerad kapacitet, inte färdiga miljöer.</p>
+    <div class="filters"><label for="search">Sök uppgifter<input id="search" type="search" placeholder="Till exempel fakturor, lager, schema…"></label><label for="area">Arbetsområde<select id="area"><option value="">Alla områden</option></select></label></div>
+    <p id="result-count" class="note" role="status">Laddar katalogen…</p>
+    <div id="tasks" class="task-list"></div>
+    <noscript><p>Läs <a href="catalogue.json">hela katalogen som JSON</a> eller <a href="https://github.com/BirgerMoell/svenska-rl/issues">välj en GitHub-uppgift</a>.</p></noscript>
+  </div>
+</section>
+
+<section class="levels section" id="evidens"><div class="section-label">03 / VISA ATT DET FUNGERAR</div><div><h2>Tre steg.<br>Allt starkare evidens.</h2><div class="level-row"><span class="level-number">L1</span><div><h3>Miljön går att köra.</h3><p>Kontrakt och verifierare testas. En liten neural modell genomför episoder. Inga påståenden om inlärning.</p></div><span class="hardware">CPU</span></div><div class="level-row"><span class="level-number">L2</span><div><h3>En större modell tränas.</h3><p>Verkliga RL-uppdateringar med minst 100M parametrar. Loss, gradienter och ändrade vikter dokumenteras.</p></div><span class="hardware">MODELLTRÄNING</span></div><div class="level-row"><span class="level-number">L3</span><div><h3>Resultatet blir bättre.</h3><p>Matchad utvärdering före och efter på held-out-uppgifter. Förbättringen redovisas med osäkerhet.</p></div><span class="hardware">EVAL</span></div><p class="note">Alla miljöer behöver en eval. Träning körs när rätt resurser finns. En loss-kurva räcker inte som bevis på förbättring.</p><a class="text-link" href="https://github.com/BirgerMoell/svenska-rl/blob/main/docs/validation.md">Läs definitionen av godkänt ↗</a></div></section>
+
+<section class="compute section"><div class="section-label">04 / HAR DU BERÄKNINGSKAPACITET?</div><div><h2>Låt din agent<br>köra experimentet.</h2><p class="intro">Du väljer budgeten. Agenten kör tester eller träning och lämnar reproducerbara resultat. Inga hyrda GPU:er startas automatiskt.</p><a class="button dark" href="https://github.com/BirgerMoell/svenska-rl/blob/main/docs/compute.md">Ge ett beräkningsbidrag <span>↗</span></a></div></section>
+</main>
+<footer><div class="footer-brand">SVENSKA RL ✳</div><p>Ett öppet projekt för agentbyggda träningsmiljöer på svenska.<br>Tre referensmiljöer nu. En större samling att bygga tillsammans.</p><div><a href="https://github.com/BirgerMoell/svenska-rl">GitHub ↗</a><a href="SKILL.md">SKILL.md ↗</a><a href="llms.txt">llms.txt ↗</a></div><p class="note">Första versionen: anspråk, tester och PR-bidrag. Automatisk granskning, sammanslagning och delad beräkningskö byggs vidare separat.</p></footer>
+</body>
+</html>

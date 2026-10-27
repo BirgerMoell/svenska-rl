@@ -1,0 +1,859 @@
+{
+  "target": 20000,
+  "areas": [
+    {
+      "id": "accounting",
+      "name": "Ekonomi och bokföring",
+      "workflow_seeds": [
+        "Skapa fakturor",
+        "Validera fakturor",
+        "Matcha betalningar",
+        "Hantera delbetalningar",
+        "Fördela kreditnotor",
+        "Utreda differenser",
+        "Följa upp förfallna fakturor",
+        "Stämma av reskontra",
+        "Rapportera kassaflöde",
+        "Kontrollera utlägg"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "purchasing",
+      "name": "Inköp och leverantörer",
+      "workflow_seeds": [
+        "Inköpsbegäran",
+        "Offertförfrågan",
+        "Offertjämförelse",
+        "Leverantörsregister",
+        "Beställning",
+        "Leveranskontroll",
+        "Avvikelsehantering",
+        "Avtalsuppföljning",
+        "Fakturakontroll",
+        "Inköpsrapport"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "sales",
+      "name": "Försäljning och CRM",
+      "workflow_seeds": [
+        "Leadkvalificering",
+        "Kundregister",
+        "Kontaktuppgifter",
+        "Offertarbete",
+        "Affärsprognos",
+        "Förnyelser",
+        "Kundsegment",
+        "Säljuppföljning",
+        "Aktivitetsplanering",
+        "Kundöverlämning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "support",
+      "name": "Kundservice",
+      "workflow_seeds": [
+        "Ärendeklassning",
+        "Felsökning",
+        "Returer",
+        "Återbetalning",
+        "Eskalering",
+        "Svarsmallar",
+        "Ärendehistorik",
+        "Prioritering",
+        "Uppföljning",
+        "Kunskapsbas"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "hr",
+      "name": "Personaladministration",
+      "workflow_seeds": [
+        "Introduktion",
+        "Ledighet",
+        "Bemanning",
+        "Kompetensregister",
+        "Utbildningsbokning",
+        "Tidrapportering",
+        "Personalregister",
+        "Avslut",
+        "Utrustning",
+        "Introduktionsplan"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "projects",
+      "name": "Projekt och samarbete",
+      "workflow_seeds": [
+        "Aktivitetsplan",
+        "Beroenden",
+        "Resursfördelning",
+        "Mötesåtgärder",
+        "Riskregister",
+        "Statusrapport",
+        "Tidsuppskattning",
+        "Ändringsbegäran",
+        "Leveranskontroll",
+        "Projektavslut"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "office",
+      "name": "Kontorsadministration",
+      "workflow_seeds": [
+        "Kalenderbokning",
+        "Resor",
+        "Korrespondens",
+        "Besök",
+        "Mötesunderlag",
+        "Dokumentdistribution",
+        "Kontaktlistor",
+        "Påminnelser",
+        "Lokalbokning",
+        "Beställningar"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "documents",
+      "name": "Dokument och arkiv",
+      "workflow_seeds": [
+        "Klassificering",
+        "Fältextraktion",
+        "Versionsjämförelse",
+        "Registerföring",
+        "Maskering",
+        "Arkivering",
+        "Metadata",
+        "Dubbletter",
+        "Dokumentpaket",
+        "Hänvisningar"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "research",
+      "name": "Informationsarbete",
+      "workflow_seeds": [
+        "Källsökning",
+        "Beläggsextraktion",
+        "Källjämförelse",
+        "Sammanställning",
+        "Referenskontroll",
+        "Tidslinje",
+        "Begreppskartläggning",
+        "Motsägelser",
+        "Tabelläsning",
+        "Frågebesvarande"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "analytics",
+      "name": "Dataanalys",
+      "workflow_seeds": [
+        "Datarensning",
+        "Sammanfogning",
+        "Beräkning",
+        "Aggregering",
+        "Rapportering",
+        "Avvikelseanalys",
+        "Datavalidering",
+        "Segmentering",
+        "Tidsserieanalys",
+        "Diagramtolkning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "software",
+      "name": "Programvaruutveckling",
+      "workflow_seeds": [
+        "Implementation",
+        "Felrättning",
+        "Testning",
+        "Refaktorering",
+        "Beroendeuppdatering",
+        "Kodgranskning",
+        "Migrering",
+        "API-anpassning",
+        "Dokumentation",
+        "Prestandafelsökning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "it",
+      "name": "IT-drift och support",
+      "workflow_seeds": [
+        "Behörighetsbegäran",
+        "Konfiguration",
+        "Övervakning",
+        "Incidenter",
+        "Säkerhetskopiering",
+        "Återställning",
+        "Inventering",
+        "Nätverksfelsökning",
+        "Distribution",
+        "Supporttriage"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "security",
+      "name": "Säkerhet och integritet",
+      "workflow_seeds": [
+        "Behörighetsrevision",
+        "Larmutredning",
+        "Datainventering",
+        "Gallring",
+        "Incidentlogg",
+        "Sekretessklassning",
+        "Nyckelrotation",
+        "Policykontroll",
+        "Åtkomstgranskning",
+        "Åtgärdsplan"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "marketing",
+      "name": "Marknad och kommunikation",
+      "workflow_seeds": [
+        "Kampanjplan",
+        "Målgrupper",
+        "Publiceringsplan",
+        "Lokalisering",
+        "Resultatanalys",
+        "Budgetfördelning",
+        "Innehållskontroll",
+        "Länkgranskning",
+        "UTM-register",
+        "Tillgångsregister"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "commerce",
+      "name": "E-handel och produktdata",
+      "workflow_seeds": [
+        "Produktlistning",
+        "Varianter",
+        "Prissättning",
+        "Kampanjer",
+        "Lagervisning",
+        "Orderavvikelser",
+        "Produktkategorier",
+        "Attribut",
+        "Returflöde",
+        "Katalogkontroll"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "logistics",
+      "name": "Logistik och lager",
+      "workflow_seeds": [
+        "Inleverans",
+        "Lagerallokering",
+        "Plockning",
+        "Påfyllning",
+        "Transportplan",
+        "Returer",
+        "Inventering",
+        "Leveransbevakning",
+        "Fraktkostnad",
+        "Lageravstämning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "manufacturing",
+      "name": "Produktion och kvalitet",
+      "workflow_seeds": [
+        "Arbetsorder",
+        "Produktionsplan",
+        "Kontrollmätning",
+        "Avvikelser",
+        "Underhåll",
+        "Spårbarhet",
+        "Materialbehov",
+        "Kapacitetsplan",
+        "Skiftöverlämning",
+        "Kvalitetsrapport"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "facilities",
+      "name": "Fastighet och lokaler",
+      "workflow_seeds": [
+        "Felanmälan",
+        "Arbetsorder",
+        "Lokalbokning",
+        "Besiktning",
+        "Energirapport",
+        "Entreprenörsplan",
+        "Nyckelregister",
+        "Underhållsplan",
+        "Tillgångsregister",
+        "Serviceuppföljning"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "education",
+      "name": "Utbildningsadministration",
+      "workflow_seeds": [
+        "Schemaläggning",
+        "Kursanmälan",
+        "Uppgiftsregister",
+        "Kursdokument",
+        "Resursfördelning",
+        "Lokalplan",
+        "Närvarosammanställning",
+        "Behörighetskontroll",
+        "Materialdistribution",
+        "Kursutvärdering"
+      ],
+      "target_environments": 1000
+    },
+    {
+      "id": "administration",
+      "name": "Förening och förvaltning",
+      "workflow_seeds": [
+        "Ansökningar",
+        "Fullständighetskontroll",
+        "Ärendefördelning",
+        "Bidragsbudget",
+        "Medlemsregister",
+        "Avgifter",
+        "Dagordning",
+        "Protokollåtgärder",
+        "Bokningar",
+        "Uppföljning"
+      ],
+      "target_environments": 1000
+    }
+  ],
+  "environments": [
+    {
+      "id": "calendar_booking",
+      "title": "Tidigaste gemensamma möte",
+      "area": "office",
+      "capability": "plan",
+      "language": "sv",
+      "version": "0.1.0",
+      "interaction": "single_turn_four_actions",
+      "data_license": "Apache-2.0",
+      "data_source": "synthetic procedural generator",
+      "max_steps": 1,
+      "qualification": {
+        "L1": "pending",
+        "L2": "pending",
+        "L3": "pending"
+      },
+      "resources": {
+        "contract": "CPU, standard library",
+        "L1": "CPU, torch, <100 MB policy memory",
+        "L2": "100M+ parameter causal LM; worker-selected hardware and budget"
+      },
+      "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark"
+    },
+    {
+      "id": "inventory_order",
+      "title": "Minsta lagerbeställning",
+      "area": "logistics",
+      "capability": "calculate",
+      "language": "sv",
+      "version": "0.1.0",
+      "interaction": "single_turn_four_actions",
+      "data_license": "Apache-2.0",
+      "data_source": "synthetic procedural generator",
+      "max_steps": 1,
+      "qualification": {
+        "L1": "pending",
+        "L2": "pending",
+        "L3": "pending"
+      },
+      "resources": {
+        "contract": "CPU, standard library",
+        "L1": "CPU, torch, <100 MB policy memory",
+        "L2": "100M+ parameter causal LM; worker-selected hardware and budget"
+      },
+      "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark"
+    },
+    {
+      "id": "invoice_totals",
+      "title": "Fakturans totalsumma",
+      "area": "accounting",
+      "capability": "calculate",
+      "language": "sv",
+      "version": "0.1.0",
+      "interaction": "single_turn_four_actions",
+      "data_license": "Apache-2.0",
+      "data_source": "synthetic procedural generator",
+      "max_steps": 1,
+      "qualification": {
+        "L1": "pending",
+        "L2": "pending",
+        "L3": "pending"
+      },
+      "resources": {
+        "contract": "CPU, standard library",
+        "L1": "CPU, torch, <100 MB policy memory",
+        "L2": "100M+ parameter causal LM; worker-selected hardware and budget"
+      },
+      "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "accounting-accounts_receivable",
+      "title": "Matcha inbetalningar mot fakturor",
+      "area": "accounting",
+      "workflow": "Kundreskontra",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: matcha inbetalningar mot fakturor. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/1"
+    },
+    {
+      "id": "purchasing-supplier_quotes",
+      "title": "Jämför offerter under budget- och leveranskrav",
+      "area": "purchasing",
+      "workflow": "Leverantörsofferter",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: jämför offerter under budget- och leveranskrav. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/2"
+    },
+    {
+      "id": "sales-crm_duplicates",
+      "title": "Slå samman dubbla kundposter utan dataförlust",
+      "area": "sales",
+      "workflow": "Kundregister",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: slå samman dubbla kundposter utan dataförlust. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/3"
+    },
+    {
+      "id": "support-returns",
+      "title": "Avgör returåtgärd utifrån uttryckliga regler",
+      "area": "support",
+      "workflow": "Returer",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: avgör returåtgärd utifrån uttryckliga regler. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/4"
+    },
+    {
+      "id": "hr-leave_balance",
+      "title": "Beräkna ledighetssaldo från en händelselogg",
+      "area": "hr",
+      "workflow": "Ledighetsadministration",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: beräkna ledighetssaldo från en händelselogg. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/5"
+    },
+    {
+      "id": "projects-dependencies",
+      "title": "Planera aktiviteter med beroenden och kapacitet",
+      "area": "projects",
+      "workflow": "Projektberoenden",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: planera aktiviteter med beroenden och kapacitet. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/6"
+    },
+    {
+      "id": "office-travel",
+      "title": "Välj en resa som uppfyller tider och kostnadsram",
+      "area": "office",
+      "workflow": "Reseplanering",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: välj en resa som uppfyller tider och kostnadsram. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/7"
+    },
+    {
+      "id": "documents-versions",
+      "title": "Identifiera sakliga ändringar mellan dokumentversioner",
+      "area": "documents",
+      "workflow": "Dokumentversioner",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: identifiera sakliga ändringar mellan dokumentversioner. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/8"
+    },
+    {
+      "id": "research-source_evidence",
+      "title": "Koppla påståenden till belägg i ett slutet källmaterial",
+      "area": "research",
+      "workflow": "Källbelägg",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: koppla påståenden till belägg i ett slutet källmaterial. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/9"
+    },
+    {
+      "id": "analytics-table_join",
+      "title": "Sammanfoga tabeller och bevara rätt kardinalitet",
+      "area": "analytics",
+      "workflow": "Tabellsammanfogning",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: sammanfoga tabeller och bevara rätt kardinalitet. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/10"
+    },
+    {
+      "id": "software-bug_repair",
+      "title": "Reparera en avgränsad bugg med dolda tester",
+      "area": "software",
+      "workflow": "Felrättning",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: reparera en avgränsad bugg med dolda tester. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/11"
+    },
+    {
+      "id": "it-incident",
+      "title": "Återställ en simulerad tjänst från loggar",
+      "area": "it",
+      "workflow": "Incidenthantering",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: återställ en simulerad tjänst från loggar. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/12"
+    },
+    {
+      "id": "security-access_audit",
+      "title": "Hitta överflödiga rättigheter mot en given policy",
+      "area": "security",
+      "workflow": "Behörighetsrevision",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: hitta överflödiga rättigheter mot en given policy. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/13"
+    },
+    {
+      "id": "marketing-campaign_budget",
+      "title": "Fördela kampanjbudget enligt mål och begränsningar",
+      "area": "marketing",
+      "workflow": "Kampanjbudget",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: fördela kampanjbudget enligt mål och begränsningar. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/14"
+    },
+    {
+      "id": "commerce-product_variants",
+      "title": "Reparera inkonsekventa produktvarianter",
+      "area": "commerce",
+      "workflow": "Produktvarianter",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: reparera inkonsekventa produktvarianter. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/15"
+    },
+    {
+      "id": "logistics-shipment",
+      "title": "Planera försändelser med kapacitetsbegränsningar",
+      "area": "logistics",
+      "workflow": "Leveransplanering",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: planera försändelser med kapacitetsbegränsningar. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/16"
+    },
+    {
+      "id": "manufacturing-inspection",
+      "title": "Klassificera partier mot uttryckliga toleranser",
+      "area": "manufacturing",
+      "workflow": "Kvalitetskontroll",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: klassificera partier mot uttryckliga toleranser. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/17"
+    },
+    {
+      "id": "facilities-work_orders",
+      "title": "Prioritera felanmälningar enligt regler och resurser",
+      "area": "facilities",
+      "workflow": "Arbetsorder",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: prioritera felanmälningar enligt regler och resurser. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/18"
+    },
+    {
+      "id": "education-timetable",
+      "title": "Bygg schema utan lärar- eller lokalkrockar",
+      "area": "education",
+      "workflow": "Schemaläggning",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: bygg schema utan lärar- eller lokalkrockar. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/19"
+    },
+    {
+      "id": "administration-applications",
+      "title": "Kontrollera om en syntetisk ansökan är komplett",
+      "area": "administration",
+      "workflow": "Ansökningshantering",
+      "status": "ready",
+      "kind": "build",
+      "language": "sv",
+      "contract": "docs/environment-contract.md",
+      "acceptance": "docs/validation.md",
+      "instructions": "Bygg en svensk, syntetisk och reproducerbar miljö för: kontrollera om en syntetisk ansökan är komplett. Modellera relevanta poster och regler explicit. Uppgiften ska gå att lösa från de observationer och verktyg som ges. Definiera ett entydigt korrekt slutläge eller ett uttryckligt korrekt avstående när information saknas. Använd inga verkliga personuppgifter eller externa konton.",
+      "acceptance_checks": [
+        "Reproducerbara train/dev/eval-generatorer med dokumenterad variationsrymd.",
+        "Referenslösare och oberoende domäntester för korrekt slutläge.",
+        "Felaktiga, ofullständiga och manipulerande handlingar får inte full belöning.",
+        "Ingen lösning eller privat verifierartillstånd i agentens observationer.",
+        "L1-rapport med liten modell och terminala episoder.",
+        "Körbar L2-träning och L3-eval; markera ej körda nivåer som pending.",
+        "Svenska instruktioner, källor, licens och resursbudget dokumenterade."
+      ],
+      "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/20"
+    }
+  ],
+  "source_sha256": "985337365ba8eb38c611f1136269e697e2065328289a4595efc018181657e72c"
+}

@@ -1,0 +1,70 @@
+{
+  "level": "L1",
+  "environment": "inventory_order",
+  "status": "passed",
+  "contract": {
+    "status": "passed",
+    "cases_per_split": 100,
+    "unique_prompts": 300,
+    "reference_success": 1.0,
+    "random_expected_success": 0.25,
+    "malformed_action_reward": 0.0
+  },
+  "domain_tests": {
+    "status": "passed",
+    "command": "python -m unittest discover -s tests",
+    "summary": "............\n----------------------------------------------------------------------\nRan 12 tests in 1.041s\n\nOK"
+  },
+  "policy": {
+    "kind": "randomly_initialized_tiny_neural_policy",
+    "parameters": 8356,
+    "seed": 42
+  },
+  "episodes": [
+    {
+      "seed": 0,
+      "action": "D",
+      "reward": 0.0
+    },
+    {
+      "seed": 1,
+      "action": "D",
+      "reward": 1.0
+    },
+    {
+      "seed": 2,
+      "action": "D",
+      "reward": 0.0
+    },
+    {
+      "seed": 3,
+      "action": "D",
+      "reward": 0.0
+    },
+    {
+      "seed": 4,
+      "action": "D",
+      "reward": 1.0
+    },
+    {
+      "seed": 5,
+      "action": "D",
+      "reward": 1.0
+    },
+    {
+      "seed": 6,
+      "action": "D",
+      "reward": 0.0
+    },
+    {
+      "seed": 7,
+      "action": "D",
+      "reward": 1.0
+    }
+  ],
+  "learning_claim": false,
+  "limitations": "Smoke test only. This policy is not a pretrained Swedish language model.",
+  "schema_version": 1,
+  "source_sha256": "985337365ba8eb38c611f1136269e697e2065328289a4595efc018181657e72c",
+  "created_at": "2026-10-27T23:00:01.994027+00:00"
+}
