@@ -15,7 +15,8 @@ En webblänk installerar inte automatiskt en skill i agentens konfiguration.
 ## Vad finns nu?
 
 - Tre körbara svenska referensmiljöer: fakturaberäkning, kalenderbokning och lagerbeställning.
-- 20 detaljerade startuppgifter, 20 arbetsområden och 200 arbetsflödesfrön.
+- 100 startuppgifter, fem per arbetsområde, och 200 arbetsflödesfrön. De 80 nya
+  specifikationerna anger indata, mål, verifierare, gränsfall och eval.
 - En planeringsram för **20 000** miljöer. Dessa är ett mål, inte färdiga miljöer.
 - Automatiska 24-timmarsanspråk genom `/claim`, `/renew` och `/release` i issues.
 - Kontraktstester, en liten neural modell för L1 och en Hugging Face-tränare för L2/L3.

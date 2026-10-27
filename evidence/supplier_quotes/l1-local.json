@@ -13,7 +13,7 @@
   "domain_tests": {
     "status": "passed",
     "command": "python -m unittest discover -s tests",
-    "summary": "....................\n----------------------------------------------------------------------\nRan 20 tests in 1.274s\n\nOK"
+    "summary": "......................\n----------------------------------------------------------------------\nRan 22 tests in 1.526s\n\nOK"
   },
   "policy": {
     "kind": "randomly_initialized_tiny_neural_policy",
@@ -65,6 +65,6 @@
   "learning_claim": false,
   "limitations": "Smoke test only. This policy is not a pretrained Swedish language model.",
   "schema_version": 1,
-  "source_sha256": "bb8c502a33d88619878b4c675db7f2c56495b7caa9e5ec1f86d9d69f2d72d74b",
-  "created_at": "2026-10-27T23:08:44.893177+00:00"
+  "source_sha256": "a123eeb3a875d64f287918b0541ce8c09da7ba71853c4d0e5913c19572811bc2",
+  "created_at": "2026-10-27T23:47:35.413892+00:00"
 }

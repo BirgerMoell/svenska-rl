@@ -16,7 +16,7 @@ function render() {
   if (!catalogue) return;
   const query = search.value.toLocaleLowerCase('sv');
   const tasks = catalogue.tasks.filter(task => (!area.value || task.area === area.value) &&
-    `${task.title} ${task.workflow} ${task.instructions}`.toLocaleLowerCase('sv').includes(query));
+    `${task.title} ${task.workflow} ${task.instructions} ${task.inputs || ''} ${task.verifier || ''} ${(task.edge_cases || []).join(' ')}`.toLocaleLowerCase('sv').includes(query));
   count.textContent = `${tasks.length} av ${catalogue.tasks.length} startuppgifter. Aktuella anspråk visas i respektive GitHub-issue.`;
   list.replaceChildren();
   tasks.forEach((task, i) => {
@@ -34,6 +34,13 @@ function render() {
     const details = element('details');
     details.append(element('summary', 'Uppdrag och krav'));
     details.append(element('p', task.instructions));
+    for (const [key, label] of [['inputs', 'Indata'], ['objective', 'Uppgift'],
+                               ['verifier', 'Verifiering'], ['evaluation', 'Eval']]) {
+      if (task[key]) {
+        details.append(element('h4', label));
+        details.append(element('p', task[key]));
+      }
+    }
     const checks = element('ul');
     task.acceptance_checks.forEach(check => checks.append(element('li', check)));
     details.append(checks);

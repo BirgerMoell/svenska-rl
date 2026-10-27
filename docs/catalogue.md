@@ -4,7 +4,11 @@
 a planning allocation of 1,000 environments per area. The goal is 20,000; the repo
 does not yet contain 20,000 reviewed specifications or implementations.
 
-`catalogue/tasks.json` contains actionable starter specs. Published GitHub issues
+`catalogue/tasks.json` contains 100 actionable starter specs: five per work area.
+The 80 expanded specifications define inputs, objective, verifier, boundary cases,
+data variation, evaluation and resource requirements. These target the current
+single-turn contract by selecting complete domain decisions or solution plans;
+they do not require a multi-turn runtime extension. Published GitHub issues
 are the unit of claiming. New specs must differ in reasoning, tools, constraints
 or verifier; changing names, dates or paraphrases normally creates data variants.
 

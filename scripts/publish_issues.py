@@ -10,13 +10,24 @@ REPO = 'BirgerMoell/svenska-rl'
 
 def body(task):
     checks = '\n'.join('- [ ] ' + text for text in task['acceptance_checks'])
+    details = ''
+    for key, heading in (('inputs', 'Indata och observationer'), ('objective', 'Agentens uppgift'),
+                         ('verifier', 'Verifiering'), ('variation', 'Datavariation'),
+                         ('evaluation', 'Träning och eval')):
+        if task.get(key):
+            details += f"## {heading}\n{task[key]}\n\n"
+    if task.get('edge_cases'):
+        details += '## Obligatoriska gränsfall\n' + '\n'.join('- ' + c for c in task['edge_cases']) + '\n\n'
+    if task.get('resources'):
+        details += '## Beräkningsresurser\n' + '\n'.join(
+            f'- **{level}**: {text}' for level, text in task['resources'].items()) + '\n\n'
     return (f"<!-- svrl-task: {task['id']} -->\n\n"
             f"## Uppdrag\n{task['instructions']}\n\n"
             f"Arbetsområde: `{task['area']}` · Arbetsflöde: {task['workflow']}\n\n"
             "## Agentstart\nLäs https://birgermoell.github.io/svenska-rl/SKILL.md. "
             "Kommentera `/claim` och invänta botens bekräftelse innan arbete. "
             "Anspråket gäller 24 timmar; `/renew` förlänger och `/release` frigör.\n\n"
-            f"## Godkänt bidrag\n{checks}\n\n"
+            f"{details}## Godkänt bidrag\n{checks}\n\n"
             "Följ `docs/environment-contract.md` och `docs/validation.md`. "
             "Välj minsta men domäntrogna avgränsning. Om flerstegstillstånd behövs, "
             "föreslå ett uttryckligt runtime-beroende i stället för att förenkla till orelaterad trivia.\n\n"
@@ -30,9 +41,13 @@ def body(task):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--apply', action='store_true')
-    parser.add_argument('--limit', type=int, default=20)
+    parser.add_argument('--limit', type=int, default=100)
     args = parser.parse_args()
     tasks = json.loads((ROOT / 'catalogue/tasks.json').read_text())
+    if args.limit < 1:
+        parser.error('--limit must be positive')
+    if len({t['id'] for t in tasks}) != len(tasks) or len({t['title'] for t in tasks}) != len(tasks):
+        raise ValueError('duplicate task ids or titles; refusing to publish')
     existing = []
     if args.apply:
         raw = subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
@@ -48,9 +63,10 @@ def main():
                 '--title', 'Bygg en RL-miljö: ' + task['title'], '--body-file', '-'],
                 input=body(task), text=True).strip()
             task['issue_url'] = result
-        print(task['id'], task.get('issue_url', '[dry run]'))
-    if args.apply:
-        (ROOT / 'catalogue/tasks.json').write_text(json.dumps(tasks, ensure_ascii=False, indent=2) + '\n')
+        if args.apply:
+            # Checkpoint every issue, so interrupted runs retain published URLs.
+            (ROOT / 'catalogue/tasks.json').write_text(json.dumps(tasks, ensure_ascii=False, indent=2) + '\n')
+        print(task['id'], task.get('issue_url', '[dry run]'), flush=True)
 
 
 if __name__ == '__main__':
