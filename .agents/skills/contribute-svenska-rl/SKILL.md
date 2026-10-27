@@ -44,7 +44,8 @@ Read the environment contract before extending it.
 
 ## Qualify
 
-Run domain and project tests, `python3 -m svrl.cli check ENV_ID` and
+Regenerate the site catalogue with `python3 scripts/build_site.py` after adding
+or modifying environment metadata. Run domain and project tests, `python3 -m svrl.cli check ENV_ID` and
 `python3 -m svrl.cli smoke ENV_ID --output runs/ENV_ID-l1.json`.
 If necessary, install PyTorch in a local virtual environment from an established
 registry when permitted. A reference solver alone is not L1.
