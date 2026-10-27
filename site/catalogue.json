@@ -411,6 +411,30 @@
         "L2": "100M+ parameter causal LM; worker-selected hardware and budget"
       },
       "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark"
+    },
+    {
+      "id": "supplier_quotes",
+      "title": "Leverantörsofferter under budget- och leveranskrav",
+      "area": "purchasing",
+      "capability": "decide",
+      "language": "sv",
+      "version": "0.1.0",
+      "interaction": "single_turn_four_actions",
+      "data_license": "Apache-2.0",
+      "data_source": "Original synthetic procedural generator; no external data",
+      "max_steps": 1,
+      "qualification": {
+        "L1": "pending",
+        "L2": "pending",
+        "L3": "pending"
+      },
+      "resources": {
+        "contract": "CPU, standard library",
+        "L1": "CPU, torch, <100 MB policy memory",
+        "L2": "100M+ parameter causal LM; worker-selected hardware and budget"
+      },
+      "splits": "SHA-256-derived train/dev/eval namespaces; public held-out seeds",
+      "task_issue": "https://github.com/BirgerMoell/svenska-rl/issues/2"
     }
   ],
   "tasks": [
@@ -855,5 +879,5 @@
       "issue_url": "https://github.com/BirgerMoell/svenska-rl/issues/20"
     }
   ],
-  "source_sha256": "985337365ba8eb38c611f1136269e697e2065328289a4595efc018181657e72c"
+  "source_sha256": "bb8c502a33d88619878b4c675db7f2c56495b7caa9e5ec1f86d9d69f2d72d74b"
 }
