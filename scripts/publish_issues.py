@@ -59,6 +59,14 @@ def main():
         found = next((i for i in existing if marker in (i.get('body') or '')), None)
         if found:
             task['issue_url'] = found['html_url']
+            # Keep open issues in sync with the catalogue (e.g. after a contract change); never touch closed
+            # issues or tasks that are already implemented.
+            if (args.apply and found['state'] == 'open' and task.get('status') != 'implemented'
+                    and (found.get('body') or '').strip() != body(task).strip()):
+                subprocess.run(['gh', 'issue', 'edit', str(found['number']), '--repo', REPO, '--body-file', '-'],
+                               input=body(task), text=True, check=True, capture_output=True)
+                print(task['id'], 'updated', found['html_url'], flush=True)
+                continue
         elif args.apply:
             result = subprocess.check_output(['gh', 'issue', 'create', '--repo', REPO,
                 '--title', 'Bygg en RL-miljö: ' + task['title'], '--body-file', '-'],
