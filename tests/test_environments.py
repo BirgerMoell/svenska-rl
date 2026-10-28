@@ -6,9 +6,14 @@ from svrl.core import ACTIONS, load, manifests, source_digest
 from svrl.validation import paired_bootstrap, validate
 
 
+def v01_manifests():
+    """Contract v0.1 (four-action multiple choice); v0.2 is covered by tests/test_contract_v02.py."""
+    return [m for m in manifests() if m.get('contract', '0.1') == '0.1']
+
+
 class EnvironmentTests(unittest.TestCase):
     def test_contract_all_discovered_environments(self):
-        for manifest in manifests():
+        for manifest in v01_manifests():
             with self.subTest(environment=manifest['id']):
                 self.assertEqual(validate(manifest['id'])['status'], 'passed')
 
@@ -50,7 +55,7 @@ class EnvironmentTests(unittest.TestCase):
         self.assertTrue(observed_zero)
 
     def test_correct_action_positions_vary(self):
-        for manifest in manifests():
+        for manifest in v01_manifests():
             env = load(manifest['id'])
             positions = set()
             for seed in range(100):
@@ -69,7 +74,7 @@ class EnvironmentTests(unittest.TestCase):
             load('../../untrusted')
 
     def test_public_payload_does_not_expose_private_fields(self):
-        for manifest in manifests():
+        for manifest in v01_manifests():
             obs = load(manifest['id']).reset()
             self.assertNotIn('answer', json.dumps(obs))
             self.assertEqual(set(obs), {'instruction', 'actions', 'max_steps'})
