@@ -1,10 +1,10 @@
-"""Contract v0.2: typed free-form answers and multi-turn tool episodes (see docs/environment-contract-v0.2.md).
+"""Environment contract v0.2: typed free-form answers and multi-turn tool episodes (docs/environment-contract.md).
 
 TypedEnvironment  one prompt, one free-form completion ending in `SVAR: ...`, scored by an answer spec.
 ToolEnvironment   the model calls tools that read and change a simulated office system over several turns; the
                   episode ends with a final message (or the step limit) and is scored on the resulting STATE.
 
-Both reuse the v0.1 seeding (`task_rng`: SHA-256 namespaces per environment and split) and the rule that ground
+Both use `task_rng` seeding (SHA-256 namespaces per environment and split) and the rule that ground
 truth comes from simulator state, never from a model.
 """
 from __future__ import annotations
@@ -22,6 +22,7 @@ FORMAT_HINTS = {
     "money": "Avsluta med en rad i formen `SVAR: <belopp i kronor>`, till exempel `SVAR: 1 234,50 kr`.",
     "date": "Avsluta med en rad i formen `SVAR: ÅÅÅÅ-MM-DD`.",
     "datetime": "Avsluta med en rad i formen `SVAR: ÅÅÅÅ-MM-DD TT:MM`.",
+    "integer": "Avsluta med en rad i formen `SVAR: <heltal>`.",
     "text": "Avsluta med en rad i formen `SVAR: <svar>`.",
     "mapping": "Avsluta med `SVAR:` följt av ett JSON-objekt.",
     "strings": "Avsluta med `SVAR:` följt av en JSON-lista med strängar, exakt som de står i texten och i den ordning de förekommer.",

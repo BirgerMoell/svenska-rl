@@ -12,12 +12,12 @@ body:
   - type: textarea
     id: contract
     attributes:
-      label: Observation, actions, generator, and success criteria
+      label: Interaction (typed answer or tool episode), generator, answer spec or end-state check
     validations:
       required: true
   - type: textarea
     id: evaluation
     attributes:
-      label: L1 checks, L2 training recipe, and L3 held-out evaluation
+      label: Shortcut probes, L1 baseline, L2 training recipe, and L3 held-out evaluation
     validations:
       required: true

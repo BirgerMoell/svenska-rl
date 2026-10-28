@@ -1,0 +1,25 @@
+{
+  "id": "supplier_quotes",
+  "title": "Välj leverantör utifrån offerter",
+  "area": "purchasing",
+  "capability": "decide",
+  "language": "sv",
+  "version": "0.2.0",
+  "contract": "0.2",
+  "interaction": "typed_answer",
+  "description": "Lägsta totalkostnad med kapacitet, leveranstid och budget som krav, oavgjort efter leveranstid och namn, eller avstå; JSON med leverantör och totalkostnad. Portad från flervalsbidraget i PR #22.",
+  "data_license": "Apache-2.0",
+  "data_source": "synthetic procedural generator (svrl.kontoret)",
+  "qualification": {
+    "contract": "pending",
+    "L1": "pending",
+    "L2": "pending",
+    "L3": "pending"
+  },
+  "resources": {
+    "contract": "CPU, standard library",
+    "rollouts": "any OpenAI-compatible chat model (svrl.rollout)"
+  },
+  "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark",
+  "answer_type": "mapping"
+}

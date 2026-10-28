@@ -4,4 +4,4 @@ Tool episode. Tools: `lista_inbetalningar`, `lista_obetalda_fakturor`, `hamta_fa
 
 Tests: the reference reaches 1.0; a wrong registration lowers the reward; finishing immediately or only reading earns at most the credit for correctly unregistered payments.
 
-Run `python3 -m svrl.cli demo payment_registration` and `python3 -m svrl.cli check payment_registration`. Contract v0.2 (docs/environment-contract-v0.2.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.
+Run `python3 -m svrl.cli demo payment_registration` and `python3 -m svrl.cli check payment_registration`. Contract v0.2 (docs/environment-contract.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.

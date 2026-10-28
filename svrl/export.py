@@ -1,4 +1,4 @@
-"""Export v0.2 environments as RL training data.
+"""Export environments as RL training data.
 
 Typed environments export self-contained rows: the prompt as chat messages plus `ground_truth`, a JSON answer
 spec that `svrl.answers.score_answer(spec, completion)` scores without the generator. That is the shape
@@ -7,7 +7,7 @@ Tool environments export the episode handle (env, seed, split) with the instruct
 multi-turn runtime replays the episode through `svrl.core.load(env).reset(seed, split)`.
 
     python3 -m svrl.cli export invoice_amount_due --split train --count 5000 --out data/invoice_amount_due-train.jsonl
-    python3 -m svrl.cli export-hf --out hf/svenska-rl-kontoret --count 2000   # every v0.2 env, train/dev/eval
+    python3 -m svrl.cli export-hf --out hf/svenska-rl-kontoret --count 2000   # every environment, train/dev/eval
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ def rows(environment_id: str, split: str, count: int, start: int = 0):
                    "max_steps": obs["max_steps"], "ground_truth": json.dumps(env.ground_truth()),
                    "dataset": "svrl_tool_episode", "meta": env._task.meta}
         else:
-            raise ValueError("v0.1 multiple-choice environments are not exported; use contract v0.2")
+            raise ValueError(f"unknown interaction: {interaction}")
 
 
 def export(environment_id: str, split: str, count: int, out: str, start: int = 0) -> dict:
@@ -64,7 +64,7 @@ configs:
 
 # Svenska RL – Kontoret
 
-Swedish office-work RL environments from [svenska-rl](https://github.com/BirgerMoell/svenska-rl) (contract v0.2):
+Swedish office-work RL environments from [svenska-rl](https://github.com/BirgerMoell/svenska-rl) (environment contract v0.2):
 synthetic tasks from one simulated Swedish organisation, scored by code against simulator state.
 
 - **Typed tasks** (`svrl_typed`): one prompt, a free-form completion ending in `SVAR: …`; `ground_truth` is a
@@ -85,8 +85,6 @@ def export_hf(out: str, count: int, eval_count: int | None = None) -> dict:
     root = Path(out)
     configs, table, report = [], [], {}
     for m in manifests():
-        if m.get("contract") != "0.2":
-            continue
         eid = m["id"]
         files = []
         for split, n in (("train", count), ("dev", eval_count or max(64, count // 10)),

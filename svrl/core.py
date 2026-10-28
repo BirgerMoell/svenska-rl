@@ -1,29 +1,11 @@
-"""A deliberately small single-turn contract; no framework dependency."""
+"""Environment discovery, seeding and source digests shared by all environments."""
 import hashlib
 import importlib
 import json
 import random
-from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ACTIONS = ("A", "B", "C", "D")
-
-
-@dataclass(frozen=True)
-class Task:
-    instruction: str
-    choices: tuple
-    answer: str
-
-    def observation(self):
-        return {"instruction": self.instruction,
-                "actions": dict(zip(ACTIONS, self.choices)), "max_steps": 1}
-
-    def prompt(self):
-        lines = [self.instruction, ""]
-        lines.extend(f"{key}: {value}" for key, value in zip(ACTIONS, self.choices))
-        return "\n".join(lines) + "\nSvara endast med A, B, C eller D."
 
 
 def task_rng(environment_id, seed, split):
@@ -33,43 +15,6 @@ def task_rng(environment_id, seed, split):
         raise ValueError("seed must be a nonnegative integer")
     digest = hashlib.sha256(f"{environment_id}:{split}:{seed}".encode()).digest()
     return random.Random(int.from_bytes(digest, "big"))
-
-
-def multiple_choice(rng, instruction, correct, distractors):
-    wrong = list(dict.fromkeys(str(x) for x in distractors if str(x) != str(correct)))
-    if len(wrong) < 3:
-        raise ValueError("three distinct distractors required")
-    choices = [str(correct)] + rng.sample(wrong, 3)
-    rng.shuffle(choices)
-    return Task(instruction, tuple(choices), ACTIONS[choices.index(str(correct))])
-
-
-class Environment:
-    id = ""
-
-    def reset(self, seed=0, split="train"):
-        self._task = self.generate(task_rng(self.id, seed, split))
-        self._done = False
-        return self._task.observation()
-
-    def step(self, action):
-        if not hasattr(self, "_task"):
-            raise RuntimeError("reset before step")
-        if self._done:
-            raise RuntimeError("episode already terminated")
-        self._done = True
-        valid = isinstance(action, str) and action.strip() in ACTIONS
-        reward = float(valid and action.strip() == self._task.answer)
-        return {"observation": {"message": "Klart."}, "reward": reward,
-                "terminated": True, "truncated": False,
-                "info": {"valid_action": valid}}
-
-    def reference_action(self):
-        """Trusted test/qualification process only. Never expose as an agent tool."""
-        return self._task.answer
-
-    def public_prompt(self):
-        return self._task.prompt()
 
 
 def manifests():

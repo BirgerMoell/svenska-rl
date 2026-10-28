@@ -1,4 +1,4 @@
-"""Answer extraction and typed scoring for contract v0.2 (free-form answers, no multiple choice).
+"""Answer extraction and typed scoring for typed-answer environments (free-form answers, no multiple choice).
 
 Every typed task asks for a final line `SVAR: <answer>`; JSON answers may span several lines after `SVAR:`.
 Reasoning before the line is allowed and ignored; a `<think>...</think>` trace is stripped. Only the LAST `SVAR:`
@@ -69,9 +69,12 @@ def parse_json(answer: str):
 #   {"type": "money", "value": <öre>}            exact amount
 #   {"type": "date", "value": "YYYY-MM-DD"}
 #   {"type": "datetime", "date": "YYYY-MM-DD", "time": "HH:MM"}
+#   {"type": "integer", "value": int}            exactly one integer in the answer line (units allowed: "40 st")
 #   {"type": "text", "value": str, "aliases": [...]}   normalised exact match
 #   {"type": "abstain"}                          the task is unanswerable; only INFORMATION SAKNAS scores
-#   {"type": "mapping", "value": {key: value}, "partial": true}   JSON object; per-key credit
+#   {"type": "mapping", "value": {key: value}, "partial": true}   JSON object; per-key credit. A value
+#       {"money": öre} matches any single amount equal to it ("1 234,50 kr", "1234.50"); null means the key
+#       must be absent or null
 #   {"type": "strings", "value": [str, ...]}                     JSON list of exact strings; multiset F1
 # Partial credit is reported as `score` (0..1); `reward` is 1.0 only for a fully correct answer unless the
 # environment opts into partial reward. Abstaining on an answerable task always scores 0.
@@ -99,6 +102,11 @@ def score_answer(spec: dict, text: str) -> dict:
         d, t = fmt.parse_date(line), fmt.parse_time(re.sub(r"\d{4}-\d{2}-\d{2}", " ", line))
         ok = d is not None and d.isoformat() == spec["date"] and t == spec["time"]
         return {"reward": float(ok), "score": float(ok), "parsed": [d and d.isoformat(), t], "reason": kind}
+    if kind == "integer":
+        found = re.findall(r"-?\d[\d \u00a0]*", first_line(answer))
+        value = int(re.sub(r"[ \u00a0]", "", found[0])) if len(found) == 1 else None
+        ok = value == spec["value"]
+        return {"reward": float(ok), "score": float(ok), "parsed": value, "reason": kind}
     if kind == "text":
         targets = {norm(spec["value"]), *(norm(a) for a in spec.get("aliases", []))}
         ok = norm(first_line(answer)).strip(" .") in targets
@@ -108,9 +116,9 @@ def score_answer(spec: dict, text: str) -> dict:
         if not isinstance(value, dict):
             return {"reward": 0.0, "score": 0.0, "parsed": None, "reason": "no JSON object"}
         expected = spec["value"]
-        got = {str(k).strip(): (norm(str(v)) if v is not None else None) for k, v in value.items()}
-        hits = sum(got.get(k) == (norm(str(v)) if v is not None else None) for k, v in expected.items())
-        extra = len(set(got) - set(expected))
+        got = {str(k).strip(): v for k, v in value.items()}
+        hits = sum(_value_matches(v, got.get(k)) for k, v in expected.items())
+        extra = len([k for k in got if k not in expected and got[k] is not None])
         score = max(0.0, (hits - extra) / len(expected))
         exact = hits == len(expected) and not extra
         return {"reward": 1.0 if exact else (score if spec.get("partial") else 0.0), "score": score,
@@ -129,6 +137,20 @@ def score_answer(spec: dict, text: str) -> dict:
     raise ValueError(f"unknown answer type: {kind}")
 
 
+def _value_matches(expected, got) -> bool:
+    if expected is None:
+        return got is None
+    if isinstance(expected, dict) and "money" in expected:
+        return got is not None and fmt.parse_money(str(got)) == expected["money"]
+    return got is not None and norm(str(got)) == norm(str(expected))
+
+
+def _render_value(value):
+    if isinstance(value, dict) and "money" in value:
+        return fmt.money(value["money"])
+    return value
+
+
 def render_reference(spec: dict) -> str:
     """A canonical correct completion for a spec (used by qualification, never shown to agents)."""
     kind = spec["type"]
@@ -142,6 +164,10 @@ def render_reference(spec: dict) -> str:
         return f"SVAR: {spec['date']} {spec['time']}"
     if kind == "text":
         return f"SVAR: {spec['value']}"
-    if kind in ("mapping", "strings"):
+    if kind == "integer":
+        return f"SVAR: {spec['value']}"
+    if kind == "mapping":
+        return "SVAR: " + json.dumps({k: _render_value(v) for k, v in spec["value"].items()}, ensure_ascii=False)
+    if kind == "strings":
         return "SVAR: " + json.dumps(spec["value"], ensure_ascii=False)
     raise ValueError(kind)

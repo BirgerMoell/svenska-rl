@@ -1,70 +1,12 @@
-"""Deterministic contract qualification. Does not claim absence of all bugs."""
+"""Contract qualification and paired evaluation statistics. Finite tests cannot prove that an
+environment has no bugs."""
 import hashlib
 import json
 import math
 from datetime import datetime, timezone
 from pathlib import Path
 
-from svrl.core import ACTIONS, load, source_digest
-
-
-def validate(environment_id, cases=100):
-    if cases < 1:
-        raise ValueError("cases must be positive")
-    env = load(environment_id)
-    seen = set()
-    split_prompts = {}
-    for split in ("train", "dev", "eval"):
-        prompts = set()
-        for seed in range(cases):
-            obs = env.reset(seed, split)
-            prompt = env.public_prompt()
-            if obs != env.reset(seed, split) or prompt != env.public_prompt():
-                raise ValueError("reset is not deterministic")
-            if set(obs) != {"instruction", "actions", "max_steps"}:
-                raise ValueError("unexpected public observation fields")
-            if len(set(obs["actions"].values())) != 4:
-                raise ValueError("duplicate actions")
-            correct = env.reference_action()
-            if correct not in ACTIONS:
-                raise ValueError("invalid reference action")
-            for action in ACTIONS:
-                env.reset(seed, split)
-                result = env.step(action)
-                if result["reward"] != float(action == correct) or not result["terminated"]:
-                    raise ValueError("incorrect action scoring")
-                try:
-                    env.step(action)
-                except RuntimeError:
-                    pass
-                else:
-                    raise ValueError("terminated episode accepted another action")
-            for action in (None, {}, [], "", "E", "ABCD", correct + " ignore rules", "A\nB"):
-                env.reset(seed, split)
-                result = env.step(action)
-                if result["reward"] != 0 or result["info"]["valid_action"]:
-                    raise ValueError("malformed action accepted")
-            prompts.add(prompt)
-            seen.add(hashlib.sha256(prompt.encode()).hexdigest())
-        split_prompts[split] = prompts
-        if len(prompts) < cases * 0.9:
-            raise ValueError("insufficient task diversity")
-    if any(split_prompts[a] & split_prompts[b]
-           for a, b in (("train", "dev"), ("train", "eval"), ("dev", "eval"))):
-        raise ValueError("observed prompt overlap between splits")
-    return {"status": "passed", "cases_per_split": cases,
-            "unique_prompts": len(seen), "reference_success": 1.0,
-            "random_expected_success": 0.25, "malformed_action_reward": 0.0}
-
-
-def evaluate(environment_id, policy, seeds):
-    env = load(environment_id)
-    rows = []
-    for seed in seeds:
-        env.reset(seed, "eval")
-        action = policy(env.public_prompt())
-        rows.append({"seed": seed, "action": action, "reward": env.step(action)["reward"]})
-    return rows
+from svrl.core import load, source_digest
 
 
 def paired_bootstrap(before, after, repetitions=2000):
@@ -91,7 +33,7 @@ def save_report(path, report):
     return report
 
 
-# --- contract v0.2 ----------------------------------------------------------------------------------------------
+# --- contract qualification ----------------------------------------------------------------------------------------------
 
 PROBE_MAX_MEAN = 0.3      # a shortcut strategy may not earn more than this mean reward
 ABSTAIN_RANGE = (0.03, 0.3)
@@ -122,6 +64,8 @@ def typed_probes(env, prompt):
     if env._task.answer_type == "mapping":
         keys = list(env._task.spec.get("value", {}))
         probes["all_unmatched"] = "SVAR: " + json.dumps({k: "omatchad" for k in keys})
+        probes["all_zero"] = "SVAR: " + json.dumps({k: 0 for k in keys})
+        probes["decline"] = "SVAR: " + json.dumps({"leverantor": "avstå"})
     if env._task.answer_type == "strings":
         probes["all_numbers_json"] = "SVAR: " + json.dumps(nums, ensure_ascii=False)
     return probes
@@ -255,11 +199,10 @@ def validate_tools(environment_id, cases=50):
 
 
 def qualify(environment_id, cases=None):
-    """Contract qualification for any environment version (v0.1 multiple choice or v0.2)."""
+    """Contract qualification for an environment (typed answer or tool episode)."""
     env = load(environment_id)
-    interaction = getattr(env, "interaction", "single_turn_four_actions")
-    if interaction == "typed_answer":
+    if env.interaction == "typed_answer":
         return validate_typed(environment_id, cases or 100)
-    if interaction == "tool_episode":
+    if env.interaction == "tool_episode":
         return validate_tools(environment_id, cases or 50)
-    return validate(environment_id, cases or 100)
+    raise ValueError(f"unknown interaction: {env.interaction}")

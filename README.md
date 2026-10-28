@@ -14,12 +14,12 @@ En webblänk installerar inte automatiskt en skill i agentens konfiguration.
 
 ## Vad finns nu?
 
-- **Kontrakt v0.2** ([docs/environment-contract-v0.2.md](docs/environment-contract-v0.2.md)): modellen skriver
+- **Miljökontrakt** ([docs/environment-contract.md](docs/environment-contract.md)): modellen skriver
   själv svaret (belopp, datum, JSON, stränglistor) eller arbetar med verktyg i flera steg och bedöms på
   systemets slutläge. Ingen flervalsfråga.
 - **Kontoret** ([docs/kontoret.md](docs/kontoret.md)): en gemensam syntetisk svensk organisation med personal,
   kunder, fakturor, inbetalningar, OCR, bankgiro, organisationsnummer, moms och svenska röda dagar.
-- Sex miljöer enligt v0.2:
+- Åtta miljöer:
 
 | Miljö | Typ | Arbetsuppgift |
 |---|---|---|
@@ -29,21 +29,23 @@ En webblänk installerar inte automatiskt en skill i agentens konfiguration.
 | `document_redaction` | stränglista | Maskera personuppgifter enligt en policy inför utlämnande |
 | `payment_registration` | verktyg | Registrera inbetalningar i reskontran och mejla om restbelopp |
 | `meeting_reschedule` | verktyg | Flytta ett möte när någon fått förhinder och meddela deltagarna |
+| `supplier_quotes` | JSON | Välj leverantör utifrån pris, frakt, kapacitet, leveranstid och budget, eller avstå |
+| `inventory_reorder` | JSON | Beställningsförslag med reservationer, inkommande leveranser och förpackningsstorlek |
 
 - Kontraktskvalificering med **genvägsprober**: tomma svar, kopierade tal, att alltid avstå eller att bara läsa
   med verktyg får inte löna sig.
 - Export till RL-träningsdata (`svrl.cli export`, `export-hf` med taggen `rl-environment`) och en
   rollout-körare för valfri OpenAI-kompatibel modell (`svrl.cli rollout`: vLLM, Ollama, llama.cpp).
-- De tre första flervalsmiljöerna (kontrakt v0.1) finns kvar som startexempel.
-- 100 uppgiftsspecifikationer över 20 arbetsområden, nu skrivna för kontrakt v0.2, och en planeringsram för
+- 100 uppgiftsspecifikationer över 20 arbetsområden, skrivna för miljökontraktet, och en planeringsram för
   **20 000** miljöer. Det är ett mål, inte färdiga miljöer.
 - Automatiska 24-timmarsanspråk genom `/claim`, `/renew` och `/release` i issues.
 
-## Tre nivåer av evidens
+## Evidensnivåer
 
 | Nivå | Krav | Betydelse |
 |---|---|---|
-| L1 · Körbar | Kontrakt, verifierartester och liten neural policy genomför episoder | Funktion kontrollerad; ingen inlärning påstås |
+| Kontrakt | `svrl.cli check`: determinism, referenssvar får 1, genvägsprober får högst 0,3, oberoende domäntester | Miljön fungerar och går inte att lura på enkla sätt (körs i CI) |
+| L1 · Baslinje | `svrl.cli rollout` med en låst modell på eval-delen | Visar hur svår miljön är och om den lämnar utrymme att lära |
 | L2 · Tränad | Modell på minst 100M parametrar, RL-uppdateringar, ändrade vikter och ändlig loss/gradientkurva | Träning faktiskt körd; minskande loss krävs inte i policygradient-RL |
 | L3 · Förbättrad | Matchad held-out-eval, minst +5 procentenheter och positiv nedre 95%-bootstrapgräns | Förbättring i experimentet; oberoende replikation behövs för betrodd märkning |
 
@@ -72,12 +74,12 @@ python3 -m svrl.cli rollout meeting_reschedule --base-url http://127.0.0.1:11434
 ```
 
 Träningsdata: `python3 -m svrl.cli export invoice_amount_due --split train --count 5000 --out data/train.jsonl`.
-Flervalsmiljöerna (v0.1) har kvar L1/L2-vägen i [träningsinstruktionerna](docs/compute.md).
+Baslinjer, träning och före/efter-jämförelse: [beräkningsbidrag](docs/compute.md).
 
 ## För agenter
 
 - [Starta ett bidrag](.agents/skills/contribute-svenska-rl/SKILL.md)
-- [Miljökontrakt v0.2](docs/environment-contract-v0.2.md) (och [v0.1](docs/environment-contract.md))
+- [Miljökontrakt](docs/environment-contract.md)
 - [Kontoret](docs/kontoret.md)
 - [Definition of done](docs/validation.md)
 - [Beräkningsbidrag](docs/compute.md)

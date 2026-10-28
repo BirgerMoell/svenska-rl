@@ -1,5 +1,5 @@
 """Reference rollout runner: evaluate any OpenAI-compatible chat model (vLLM, Ollama, llama.cpp, a hosted API)
-on v0.2 environments. Standard library only.
+on the environments. Standard library only.
 
     python3 -m svrl.cli rollout invoice_amount_due --base-url http://127.0.0.1:11434/v1 --model agora \
         --split eval --count 64 --out runs/agora-invoice_amount_due.jsonl
@@ -121,3 +121,25 @@ def rollout(environment_id: str, client: ChatClient, split: str = "eval", count:
             "mean_reward": round(sum(r["reward"] for r in scored) / max(1, len(scored)), 4),
             "solved": round(sum(r["reward"] >= 1.0 for r in scored) / max(1, len(scored)), 4),
             "by_level": {k: round(sum(v) / len(v), 3) for k, v in sorted(by_level.items())}}
+
+
+def compare_files(before_path: str, after_path: str) -> dict:
+    """Paired comparison of two rollout files over the same environment, split and seeds (L3 statistics)."""
+    from svrl.validation import paired_bootstrap
+
+    def read(path):
+        rows = [json.loads(line) for line in open(path, encoding="utf-8")]
+        if any(r.get("reward") is None for r in rows):
+            raise ValueError(f"{path}: failed episodes must be rerun, not dropped")
+        return sorted(rows, key=lambda r: r["seed"])
+
+    before, after = read(before_path), read(after_path)
+    for key in ("env", "split"):
+        if {r[key] for r in before} != {r[key] for r in after} or len({r[key] for r in before}) != 1:
+            raise ValueError(f"rollout files differ in {key}")
+    stats = paired_bootstrap(before, after)
+    improved = stats["delta"] >= .05 and stats["ci95"][0] > 0
+    return {"environment": before[0]["env"], "split": before[0]["split"], "cases": len(before),
+            "before_mean": sum(r["reward"] for r in before) / len(before),
+            "after_mean": sum(r["reward"] for r in after) / len(after),
+            "paired_improvement": stats, "l3_outcome": "passed" if improved else "inconclusive"}

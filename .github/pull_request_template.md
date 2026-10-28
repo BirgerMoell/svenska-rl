@@ -7,7 +7,8 @@ What can the agent learn, and how does this differ from existing environments?
 - Environment / source digest:
 - Claim confirmation:
 - Contract and adversarial tests:
-- L1 report:
+- Contract report (`svrl.cli check`):
+- L1 baseline (`svrl.cli rollout`, model and digest), if run:
 - L2 / L3 report, if run (otherwise say not run):
 - Data provenance and license:
 

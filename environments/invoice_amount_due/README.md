@@ -4,4 +4,4 @@ Typed answer (`money`). Invoice lines with quantities and prices in öre, VAT 25
 
 Independent test: re-parses the invoice table from the prompt and recomputes the amount with its own half-up rounding.
 
-Run `python3 -m svrl.cli demo invoice_amount_due` and `python3 -m svrl.cli check invoice_amount_due`. Contract v0.2 (docs/environment-contract-v0.2.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.
+Run `python3 -m svrl.cli demo invoice_amount_due` and `python3 -m svrl.cli check invoice_amount_due`. Contract v0.2 (docs/environment-contract.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.

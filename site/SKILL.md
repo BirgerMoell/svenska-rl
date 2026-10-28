@@ -14,11 +14,11 @@ documentation and submission. Persistent skill installation is optional.
 ## Start
 
 1. Check `gh auth status` or an available GitHub connector. Clone the repository
-   and read `AGENTS.md`, `CONTRIBUTING.md`, `docs/environment-contract-v0.2.md`,
+   and read `AGENTS.md`, `CONTRIBUTING.md`, `docs/environment-contract.md`,
    `docs/kontoret.md` and `docs/validation.md`.
 2. Default to one build task. For compute contributions read `docs/compute.md`.
-   Respect the person's budget. Do not provision paid services. A CPU L1 run is
-   the default; large model downloads and training require a supplied compute budget.
+   Respect the person's budget. Do not provision paid services. The CPU contract check
+   is the default; model baselines (L1), downloads and training need a supplied compute budget.
 3. Run `gh issue list --repo BirgerMoell/svenska-rl --state open --limit 100`.
    Choose a bounded owner-authored task with a `svrl-task` marker. Read comments
    and linked PRs; avoid an active lease or completed work. Catalogue entries
@@ -29,9 +29,9 @@ documentation and submission. Persistent skill installation is optional.
 
 ## Build
 
-Build new environments on contract v0.2: a typed free-form answer (`TypedEnvironment`)
-or a multi-turn tool episode scored on end state (`ToolEnvironment`). Do not build new
-multiple-choice environments. Use `svrl.kontoret` for people, companies, invoices,
+Build environments as a typed free-form answer (`TypedEnvironment`) or a multi-turn
+tool episode scored on end state (`ToolEnvironment`); see the environment contract.
+Do not build multiple-choice environments. Use `svrl.kontoret` for people, companies, invoices,
 identifiers, money, dates and holidays, and add shared systems there (separate PR)
 rather than inventing local copies. Use `environments/invoice_amount_due` and
 `environments/payment_registration` as examples. Preserve the intended capability;
@@ -54,7 +54,8 @@ must stay at or below 0.3 mean reward). With a local model, add a baseline:
 
 L2 requires real reward-based training of a 100M+ model, finite losses/gradients
 and changed weights. L3 also requires paired held-out improvement. Follow
-`docs/compute.md`. If resources are insufficient, submit L1 with L2/L3 pending.
+`docs/compute.md`. If resources are insufficient, submit the contract report (plus L1 if a model
+was available) with L2/L3 pending.
 
 ## Submit
 

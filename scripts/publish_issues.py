@@ -31,9 +31,10 @@ def body(task):
             "Följ `docs/environment-contract.md` och `docs/validation.md`. "
             "Välj minsta men domäntrogna avgränsning. Om flerstegstillstånd behövs, "
             "föreslå ett uttryckligt runtime-beroende i stället för att förenkla till orelaterad trivia.\n\n"
-            "L1: kontrakt + domäntester + liten neural policy. L2: verklig RL-träning "
-            "av >=100M modell med loss/gradienter och ändrade vikter. L3: matchad "
-            "held-out-eval med statistiskt belagd förbättring. Ej körda nivåer är pending.\n\n"
+            "Kontrakt: `svrl.cli check` med genvägsprober + oberoende domäntester. L1: baslinje "
+            "med `svrl.cli rollout` och en låst modell. L2: verklig RL-träning av >=100M modell "
+            "med loss/gradienter och ändrade vikter. L3: matchad held-out-eval med statistiskt "
+            "belagd förbättring. Ej körda nivåer är pending.\n\n"
             "Bidragsgivaren behöver inte skriva kod eller granska manuellt. Agenten "
             "skickar en PR med `Closes #NUMMER` och faktisk evidens.")
 

@@ -1,163 +1,153 @@
-"""Local tiny-policy smoke tests and genuine policy-gradient LM training.
+"""Small, dependency-light GRPO for typed environments: evidence that an environment teaches (L2/L3).
 
-All starter tasks expose four terminal actions. The HF policy samples the
-single-token action A/B/C/D from the causal LM's conditional distribution.
-This is constrained-action RL, not free-form generation or SFT.
+For each training prompt the policy samples a group of free-form completions; the environment scores each one;
+advantages are the group-normalised rewards (no critic, no KL term); the loss is the token-mean negative
+log-likelihood of each completion weighted by its advantage. Groups where every completion scores the same carry
+no signal and are skipped. Before/after evaluation is greedy on the same held-out eval seeds, so the comparison
+is paired (docs/validation.md). For serious runs export the data (`svrl.cli export`) to a full RLVR trainer.
+Tool episodes are not trained here; use `svrl.rollout` with an external multi-turn trainer.
 """
+from __future__ import annotations
+
 import hashlib
 import math
 from pathlib import Path
 
-from svrl.core import ACTIONS, ROOT, load
-from svrl.validation import evaluate, paired_bootstrap, save_report, validate
+from svrl.core import load
+from svrl.validation import paired_bootstrap, qualify, save_report
 
 
-def policy_gradient_loss(distribution, action, reward):
-    return -(reward - .25) * distribution.log_prob(action)
+def group_advantages(rewards: list, eps: float = 1e-6) -> list:
+    """GRPO advantages: (r - mean) / std within one prompt's group; all zero when the group has no variance."""
+    mean = sum(rewards) / len(rewards)
+    std = math.sqrt(sum((r - mean) ** 2 for r in rewards) / len(rewards))
+    if std < eps:
+        return [0.0] * len(rewards)
+    return [(r - mean) / std for r in rewards]
 
 
-def smoke(environment_id, output, episodes=8):
-    import subprocess
-    import sys
-    import torch
-    if episodes < 8:
-        raise ValueError("L1 needs at least eight model episodes")
-    domain_tests = subprocess.run([sys.executable, '-m', 'unittest', 'discover', '-s', 'tests'],
-                                 cwd=ROOT, capture_output=True, text=True, timeout=120)
-    if domain_tests.returncode:
-        raise ValueError("domain/project tests failed:\n" + domain_tests.stderr)
-    torch.manual_seed(42)
-    model = torch.nn.Sequential(torch.nn.Linear(256, 32), torch.nn.Tanh(), torch.nn.Linear(32, 4))
-    model.eval()
-
-    def act(prompt):
-        features = torch.zeros(256)
-        for word in prompt.split():
-            i = hashlib.sha256(word.encode()).digest()[0]
-            features[i] += 1
-        with torch.no_grad():
-            logits = model(features / max(1, len(prompt.split())))
-            if not torch.isfinite(logits).all():
-                raise ValueError("non-finite model logits")
-            return ACTIONS[int(logits.argmax())]
-
-    contract = validate(environment_id)
-    rows = evaluate(environment_id, act, range(episodes))
-    return save_report(output, {"level": "L1", "environment": environment_id,
-        "status": "passed", "contract": contract,
-        "domain_tests": {"status": "passed", "command": "python -m unittest discover -s tests",
-                         "summary": domain_tests.stderr.strip()},
-        "policy": {"kind": "randomly_initialized_tiny_neural_policy",
-                   "parameters": sum(p.numel() for p in model.parameters()), "seed": 42},
-        "episodes": rows, "learning_claim": False,
-        "limitations": "Smoke test only. This policy is not a pretrained Swedish language model."})
-
-
-def train(environment_id, model_id, revision, output_dir, steps=20, batch_size=4,
-          eval_cases=64, learning_rate=1e-5, seed=42, device="cpu", threads=2):
+def train(environment_id, model_id, revision, output_dir, steps=20, prompts_per_step=4, group_size=4,
+          max_new_tokens=384, eval_cases=64, learning_rate=1e-6, temperature=1.0, seed=42, device="cpu",
+          threads=2):
     import torch
     import transformers
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    if steps < 2 or batch_size < 2 or eval_cases < 32:
-        raise ValueError("need >=2 steps, >=2 batch size, >=32 evaluation cases")
+    if steps < 2 or prompts_per_step < 1 or group_size < 2 or eval_cases < 32:
+        raise ValueError("need >=2 steps, >=1 prompt per step, group size >=2 and >=32 evaluation cases")
     if not math.isfinite(learning_rate) or learning_rate <= 0:
         raise ValueError("learning rate must be finite and positive")
     if not revision or revision == "main":
         raise ValueError("pin a model revision (prefer the exact HF commit)")
-    validate(environment_id)
+    env = load(environment_id)
+    if env.interaction != "typed_answer":
+        raise ValueError("the built-in trainer handles typed_answer environments; export tool episodes instead")
+    contract = qualify(environment_id, 30)
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
-    l1 = smoke(environment_id, output / "l1.json")
     torch.set_num_threads(threads)
     torch.manual_seed(seed)
     tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision, trust_remote_code=False)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_id, revision=revision, trust_remote_code=False).to(device)
+    model = AutoModelForCausalLM.from_pretrained(model_id, revision=revision, trust_remote_code=False).to(device)
     parameters = sum(p.numel() for p in model.parameters())
     if parameters < 100_000_000:
-        raise ValueError("L2 requires >=100M model parameters; use smoke for tiny policies")
-    model.config.use_cache = False
-    action_ids = [tokenizer.encode(a, add_special_tokens=False) for a in ACTIONS]
-    if any(len(ids) != 1 for ids in action_ids) or len({ids[0] for ids in action_ids}) != 4:
-        raise ValueError("model tokenizer must encode A/B/C/D as distinct single tokens")
-    action_ids = torch.tensor([ids[0] for ids in action_ids], device=device)
+        raise ValueError("L2 requires >=100M model parameters")
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
 
-    def distribution(prompt):
-        messages = [{"role": "user", "content": prompt}]
-        text = (tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-                if tokenizer.chat_template else prompt + "\nSvar:")
-        tokens = tokenizer(text, return_tensors="pt").to(device)
-        if tokens.input_ids.shape[1] > 2048:
-            raise ValueError("prompt exceeds 2048-token budget")
-        logits = model(**tokens).logits[0, -1, action_ids]
-        if not torch.isfinite(logits).all():
-            raise ValueError("non-finite logits")
-        return torch.distributions.Categorical(logits=logits)
+    def prompt_ids(text):
+        messages = [{"role": "user", "content": text}]
+        rendered = (tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+                    if tokenizer.chat_template else text + "\n")
+        ids = tokenizer(rendered, return_tensors="pt", add_special_tokens=False).input_ids.to(device)
+        if ids.shape[1] > 4096:
+            raise ValueError("prompt exceeds the 4096-token budget")
+        return ids
 
-    def greedy(prompt):
+    def generate(ids, n, greedy):
         with torch.no_grad():
-            return ACTIONS[int(distribution(prompt).probs.argmax())]
+            out = model.generate(ids, max_new_tokens=max_new_tokens, do_sample=not greedy,
+                                 temperature=None if greedy else temperature, top_p=None, top_k=None,
+                                 num_return_sequences=n, pad_token_id=tokenizer.pad_token_id)
+        return [o[ids.shape[1]:] for o in out]
 
-    model.eval()
-    evaluation_seeds = list(range(10000, 10000 + eval_cases))
-    before = evaluate(environment_id, greedy, evaluation_seeds)
-    # A fixed held-out set is evaluated once before and once after the fixed run.
-    # Never select checkpoints or tune hyperparameters on this eval split.
+    def evaluate(seeds):
+        model.eval()
+        rows = []
+        for s in seeds:
+            env.reset(s, "eval")
+            completion = tokenizer.decode(generate(prompt_ids(env.public_prompt()), 1, True)[0],
+                                          skip_special_tokens=True)
+            rows.append({"seed": s, "reward": env.step(completion)["reward"]})
+        return rows
+
+    evaluation_seeds = list(range(eval_cases))
+    before = evaluate(evaluation_seeds)  # fixed, predeclared held-out set; never used for selection
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
-    env = load(environment_id)
-    curve = []
     start_weight = next(model.parameters()).detach().clone()
+    curve = []
     for step in range(steps):
-        model.train()
         optimizer.zero_grad()
-        losses, rewards = [], []
-        for item in range(batch_size):
-            env.reset(seed * 1000000 + step * batch_size + item, "train")
-            dist = distribution(env.public_prompt())
-            action = dist.sample()
-            reward = env.step(ACTIONS[int(action)])["reward"]
-            # Fixed chance baseline. Only environment rewards drive updates.
-            loss = policy_gradient_loss(dist, action, reward)
-            if not torch.isfinite(loss):
-                raise ValueError("non-finite loss")
-            (loss / batch_size).backward()
-            losses.append(float(loss.detach()))
-            rewards.append(reward)
-        norm = float(torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0))
+        losses, rewards, used = [], [], 0
+        for k in range(prompts_per_step):
+            train_seed = seed * 1_000_000 + step * prompts_per_step + k
+            env.reset(train_seed, "train")
+            ids = prompt_ids(env.public_prompt())
+            model.eval()
+            completions = generate(ids, group_size, False)
+            group = []
+            for c in completions:
+                env.reset(train_seed, "train")
+                group.append(env.step(tokenizer.decode(c, skip_special_tokens=True))["reward"])
+            rewards += group
+            advantages = group_advantages(group)
+            if not any(advantages):
+                continue
+            used += 1
+            model.train()
+            for completion, advantage in zip(completions, advantages):
+                if advantage == 0 or completion.numel() == 0:
+                    continue
+                full = torch.cat([ids[0], completion]).unsqueeze(0)
+                logits = model(full).logits[0, ids.shape[1] - 1:-1]
+                logp = torch.log_softmax(logits.float(), -1).gather(1, completion.unsqueeze(1)).squeeze(1)
+                loss = -advantage * logp.mean() / (prompts_per_step * group_size)
+                if not torch.isfinite(loss):
+                    raise ValueError("non-finite loss")
+                loss.backward()
+                losses.append(float(loss.detach()))
+        norm = float(torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)) if losses else 0.0
         if not math.isfinite(norm):
             raise ValueError("non-finite gradient norm")
-        optimizer.step()
-        row = {"step": step + 1, "loss": sum(losses) / batch_size,
-               "reward": sum(rewards) / batch_size, "gradient_norm": norm}
+        if losses:
+            optimizer.step()
+        row = {"step": step + 1, "loss": sum(losses), "reward": sum(rewards) / len(rewards),
+               "groups_with_signal": used, "gradient_norm": norm}
         curve.append(row)
         print(row, flush=True)
     changed = not torch.equal(start_weight, next(model.parameters()).detach())
-    if not changed or not any(row["gradient_norm"] > 0 for row in curve):
-        raise ValueError("no effective training update detected")
-    model.eval()
-    after = evaluate(environment_id, greedy, evaluation_seeds)
+    after = evaluate(evaluation_seeds)
     model.save_pretrained(output / "checkpoint", safe_serialization=True)
     tokenizer.save_pretrained(output / "checkpoint")
-    checkpoint_hash = hashlib.sha256()
+    digest = hashlib.sha256()
     for path in sorted((output / "checkpoint").rglob("*")):
         if path.is_file():
-            checkpoint_hash.update(path.name.encode())
+            digest.update(path.name.encode())
             with path.open("rb") as handle:
-                for block in iter(lambda: handle.read(1024 * 1024), b""):
-                    checkpoint_hash.update(block)
+                for block in iter(lambda: handle.read(1 << 20), b""):
+                    digest.update(block)
     stats = paired_bootstrap(before, after)
-    improved = stats["delta"] >= .05 and stats["ci95"][0] > 0
+    trained = changed and any(r["gradient_norm"] > 0 for r in curve)
+    improved = trained and stats["delta"] >= .05 and stats["ci95"][0] > 0
     return save_report(output / "report.json", {
-        "level": "L3" if improved else "L2", "status": "passed",
-        "environment": environment_id, "L1": l1, "model": model_id, "revision": revision,
-        "resolved_revision": getattr(model.config, "_commit_hash", None),
-        "parameters": parameters, "algorithm": "REINFORCE, categorical A/B/C/D, baseline=0.25",
-        "config": {"steps": steps, "batch_size": batch_size, "eval_cases": eval_cases,
-                   "learning_rate": learning_rate, "seed": seed, "device": device,
-                   "threads": threads, "max_prompt_tokens": 2048},
+        "level": "L3" if improved else "L2" if trained else "L1", "status": "passed" if trained else "no_update",
+        "environment": environment_id, "contract": contract, "model": model_id, "revision": revision,
+        "resolved_revision": getattr(model.config, "_commit_hash", None), "parameters": parameters,
+        "algorithm": "GRPO (group-normalised rewards, no KL, token-mean loss)",
+        "config": {"steps": steps, "prompts_per_step": prompts_per_step, "group_size": group_size,
+                   "max_new_tokens": max_new_tokens, "eval_cases": eval_cases, "learning_rate": learning_rate,
+                   "temperature": temperature, "seed": seed, "device": device, "threads": threads},
         "runtime": {"torch": torch.__version__, "transformers": transformers.__version__},
-        "weights_changed": changed, "checkpoint_sha256": checkpoint_hash.hexdigest(),
-        "training_curve": curve, "before": before, "after": after,
-        "paired_improvement": stats,
+        "weights_changed": changed, "checkpoint_sha256": digest.hexdigest(), "training_curve": curve,
+        "before": before, "after": after, "paired_improvement": stats,
         "l3_outcome": "passed" if improved else "inconclusive",
         "limitations": "Public held-out seeds; independent replication required for trusted promotion."})

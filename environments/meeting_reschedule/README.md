@@ -4,4 +4,4 @@ Tool episode. Tools: `lista_personer`, `hamta_mote`, `hamta_kalender`, `flytta_m
 
 Tests: the reference reaches 1.0; moving to a wrong time scores 0.
 
-Run `python3 -m svrl.cli demo meeting_reschedule` and `python3 -m svrl.cli check meeting_reschedule`. Contract v0.2 (docs/environment-contract-v0.2.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.
+Run `python3 -m svrl.cli demo meeting_reschedule` and `python3 -m svrl.cli check meeting_reschedule`. Contract v0.2 (docs/environment-contract.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.

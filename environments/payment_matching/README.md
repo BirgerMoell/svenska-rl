@@ -4,4 +4,4 @@ Typed answer (`mapping`, partial reward per payment). Open invoices with OCR ref
 
 Independent test: re-applies the rules to the tables parsed from the prompt, with its own Luhn check.
 
-Run `python3 -m svrl.cli demo payment_matching` and `python3 -m svrl.cli check payment_matching`. Contract v0.2 (docs/environment-contract-v0.2.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.
+Run `python3 -m svrl.cli demo payment_matching` and `python3 -m svrl.cli check payment_matching`. Contract v0.2 (docs/environment-contract.md); data from the shared generator in `svrl.kontoret`. Synthetic, Apache-2.0.
