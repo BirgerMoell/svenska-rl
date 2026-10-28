@@ -51,6 +51,12 @@ class AnswerTests(unittest.TestCase):
         self.assertEqual(answers.score_answer(spec, "**SVAR:** 123,45 kr")["reward"], 1.0)
         self.assertEqual(answers.score_answer(spec, "SVAR: 123,45 kr eller 124,00 kr")["reward"], 0.0)
 
+    def test_markdown_and_key_spelling_do_not_matter(self):
+        self.assertEqual(answers.score_answer({"type": "money", "value": 254974}, "**SVAR:** 2 549,74 kr")["reward"], 1.0)
+        spec = {"type": "mapping", "value": {"leverantor": "Beta", "totalkostnad": {"money": 163525}}}
+        self.assertEqual(answers.score_answer(spec, 'SVAR: {"Leverantör": "Beta", "totalkostnad": 1635.25}')["reward"], 1.0)
+        self.assertEqual(answers.score_answer(spec, 'SVAR: {"leverantör": "Gamma", "totalkostnad": 1635.25}')["reward"], 0.0)
+
     def test_abstention_only_when_unanswerable(self):
         self.assertEqual(answers.score_answer({"type": "abstain"}, "SVAR: Information saknas.")["reward"], 1.0)
         self.assertEqual(answers.score_answer({"type": "money", "value": 1}, "SVAR: INFORMATION SAKNAS")["reward"], 0)

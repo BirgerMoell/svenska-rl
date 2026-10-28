@@ -32,6 +32,7 @@ def final_answer(text: str) -> str | None:
     if not matches:
         return None
     answer = body[matches[-1].end():].strip()
+    answer = re.sub(r"^\*+\s*|\s*\*+$", "", answer)  # markdown bold around the answer: **SVAR:** 12 kr**
     answer = re.sub(r"^```(?:json)?\s*|\s*```$", "", answer).strip()
     if not answer or len(answer) > MAX_ANSWER_CHARS:
         return None
@@ -45,6 +46,12 @@ def is_abstention(answer: str | None) -> bool:
 def norm(text: str) -> str:
     text = unicodedata.normalize("NFKC", text or "").casefold()
     return re.sub(r"\s+", " ", text).strip()
+
+
+def key_norm(key) -> str:
+    """JSON keys compare without case, surrounding space or diacritics ("leverantör" == "leverantor")."""
+    text = unicodedata.normalize("NFKD", str(key).strip().casefold())
+    return "".join(ch for ch in text if not unicodedata.combining(ch))
 
 
 def first_line(answer: str) -> str:
@@ -115,8 +122,8 @@ def score_answer(spec: dict, text: str) -> dict:
         value = parse_json(answer)
         if not isinstance(value, dict):
             return {"reward": 0.0, "score": 0.0, "parsed": None, "reason": "no JSON object"}
-        expected = spec["value"]
-        got = {str(k).strip(): v for k, v in value.items()}
+        expected = {key_norm(k): v for k, v in spec["value"].items()}
+        got = {key_norm(k): v for k, v in value.items()}
         hits = sum(_value_matches(v, got.get(k)) for k, v in expected.items())
         extra = len([k for k in got if k not in expected and got[k] is not None])
         score = max(0.0, (hits - extra) / len(expected))
