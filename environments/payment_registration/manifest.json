@@ -1,0 +1,24 @@
+{
+  "id": "payment_registration",
+  "title": "Registrera inbetalningar och påminn om restbelopp",
+  "area": "accounting",
+  "capability": "execute",
+  "language": "sv",
+  "version": "0.2.0",
+  "contract": "0.2",
+  "interaction": "tool_episode",
+  "description": "Verktyg för reskontra och e-post; bedöms på slutligt systemtillstånd.",
+  "data_license": "Apache-2.0",
+  "data_source": "synthetic procedural generator (svrl.kontoret)",
+  "qualification": {
+    "contract": "pending",
+    "L1": "pending",
+    "L2": "pending",
+    "L3": "pending"
+  },
+  "resources": {
+    "contract": "CPU, standard library",
+    "rollouts": "any OpenAI-compatible chat model (svrl.rollout)"
+  },
+  "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark"
+}

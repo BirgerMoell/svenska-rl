@@ -1,0 +1,25 @@
+{
+  "id": "payment_matching",
+  "title": "Matcha inbetalningar mot kundfakturor",
+  "area": "accounting",
+  "capability": "reconcile",
+  "language": "sv",
+  "version": "0.2.0",
+  "contract": "0.2",
+  "interaction": "typed_answer",
+  "description": "OCR-kontroll med Luhn, delbetalningar, tvetydiga dubbletter och okända betalare; JSON-svar med delpoäng per inbetalning.",
+  "data_license": "Apache-2.0",
+  "data_source": "synthetic procedural generator (svrl.kontoret)",
+  "qualification": {
+    "contract": "pending",
+    "L1": "pending",
+    "L2": "pending",
+    "L3": "pending"
+  },
+  "resources": {
+    "contract": "CPU, standard library",
+    "rollouts": "any OpenAI-compatible chat model (svrl.rollout)"
+  },
+  "splits": "SHA-256-derived train/dev/eval namespaces; public eval, not a secret benchmark",
+  "answer_type": "mapping"
+}

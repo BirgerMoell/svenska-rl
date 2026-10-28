@@ -14,8 +14,8 @@ documentation and submission. Persistent skill installation is optional.
 ## Start
 
 1. Check `gh auth status` or an available GitHub connector. Clone the repository
-   and read `AGENTS.md`, `CONTRIBUTING.md`, `docs/environment-contract.md` and
-   `docs/validation.md`.
+   and read `AGENTS.md`, `CONTRIBUTING.md`, `docs/environment-contract-v0.2.md`,
+   `docs/kontoret.md` and `docs/validation.md`.
 2. Default to one build task. For compute contributions read `docs/compute.md`.
    Respect the person's budget. Do not provision paid services. A CPU L1 run is
    the default; large model downloads and training require a supplied compute budget.
@@ -29,26 +29,28 @@ documentation and submission. Persistent skill installation is optional.
 
 ## Build
 
-Use the reference environments as minimal examples. Preserve the intended
-capability; do not replace a workflow with unrelated easy multiple-choice trivia.
-Multi-turn work may need a separate shared-runtime prerequisite ticket.
+Build new environments on contract v0.2: a typed free-form answer (`TypedEnvironment`)
+or a multi-turn tool episode scored on end state (`ToolEnvironment`). Do not build new
+multiple-choice environments. Use `svrl.kontoret` for people, companies, invoices,
+identifiers, money, dates and holidays, and add shared systems there (separate PR)
+rather than inventing local copies. Use `environments/invoice_amount_due` and
+`environments/payment_registration` as examples. Preserve the intended capability;
+do not replace a workflow with trivia.
 
-Implement a generator or validated data pack, public observations, actions,
-authoritative-state verifier, reference solver, independent domain tests and
-train/dev/eval splits. Never expose answers or verifier internals as model tools.
-Use Swedish instructions and synthetic data by default; record external data
-provenance and licenses. Never train on evaluation-only datasets.
-
-The starter runner supports four terminal actions and constrained-action LM RL.
-Read the environment contract before extending it.
+Implement a generator, public observations, an answer spec or tool set with an
+end-state check, a reference answer or action list, independent domain tests that
+re-solve tasks from the public prompt, and train/dev/eval splits. Never expose answers
+or verifier internals in prompts or tools. Use Swedish instructions and synthetic data
+by default; record external data provenance and licenses. Never train on
+evaluation-only datasets.
 
 ## Qualify
 
 Regenerate the site catalogue with `python3 scripts/build_site.py` after adding
-or modifying environment metadata. Run domain and project tests, `python3 -m svrl.cli check ENV_ID` and
-`python3 -m svrl.cli smoke ENV_ID --output runs/ENV_ID-l1.json`.
-If necessary, install PyTorch in a local virtual environment from an established
-registry when permitted. A reference solver alone is not L1.
+or modifying environment metadata. Run domain and project tests and
+`python3 -m svrl.cli check ENV_ID --output runs/ENV_ID-contract.json` (shortcut probes
+must stay at or below 0.3 mean reward). With a local model, add a baseline:
+`python3 -m svrl.cli rollout ENV_ID --base-url ... --model ...`.
 
 L2 requires real reward-based training of a 100M+ model, finite losses/gradients
 and changed weights. L3 also requires paired held-out improvement. Follow

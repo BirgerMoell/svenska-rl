@@ -24,6 +24,8 @@ class CatalogueTests(unittest.TestCase):
                 self.assertTrue(task['instructions'])
                 self.assertGreaterEqual(len(task['acceptance_checks']), 5)
                 self.assertTrue((ROOT / task['contract']).is_file())
+                if task['status'] == 'implemented':
+                    self.assertTrue((ROOT / 'environments' / task['environment'] / 'manifest.json').is_file())
                 self.assertTrue((ROOT / task['acceptance']).is_file())
                 if task.get('issue_url'):
                     self.assertRegex(task['issue_url'], r'^https://github.com/BirgerMoell/svenska-rl/issues/\d+$')
@@ -38,5 +40,5 @@ class CatalogueTests(unittest.TestCase):
                     self.assertTrue(task[field].strip())
                 self.assertGreaterEqual(len(task['edge_cases']), 3)
                 self.assertEqual(task['prerequisites'], [])
-                self.assertEqual(task['interaction'], 'single_turn_four_actions')
+                self.assertIn(task['interaction'], ('typed_answer', 'tool_episode'))
                 self.assertIn('L1', task['resources'])

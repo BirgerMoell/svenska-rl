@@ -6,15 +6,16 @@ does not yet contain 20,000 reviewed specifications or implementations.
 
 `catalogue/tasks.json` contains 100 actionable starter specs: five per work area.
 The 80 expanded specifications define inputs, objective, verifier, boundary cases,
-data variation, evaluation and resource requirements. These target the current
-single-turn contract by selecting complete domain decisions or solution plans;
-they do not require a multi-turn runtime extension. Published GitHub issues
+data variation, evaluation and resource requirements. They target contract v0.2
+(`interaction: typed_answer` by default); a spec whose workflow changes system state
+may be built as a `tool_episode` instead. Specs already built carry
+`status: implemented` and the environment id. Published GitHub issues
 are the unit of claiming. New specs must differ in reasoning, tools, constraints
 or verifier; changing names, dates or paraphrases normally creates data variants.
 
 ## Infrastructure backlog
 
-1. Tested OpenEnv adapter and multi-turn state.
+1. Tested OpenEnv adapter (multi-turn state exists: contract v0.2 tool episodes).
 2. Independent adversarial reviewer agent with bounded retries.
 3. Trusted evidence ingestion and reproducible badge promotion.
 4. Disposable compute-worker protocol and job selection.
